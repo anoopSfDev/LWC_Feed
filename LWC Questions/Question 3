@@ -1,0 +1,110 @@
+Question 5
+What are the benefits of using LWC over Aura in terms of performance and development?
+Companies that asked this: Salesforce, Accenture, Deloitte, IBM, PWC
+
+Answer:
+There are several key benefits of LWC over Aura, and I'll break them down into performance and development advantages:
+
+Performance Benefits:
+
+1. Faster Loading: LWC components load 2-3x faster than Aura
+
+Native browser APIs instead of custom framework
+
+Smaller bundle sizes (LWC: ~15KB vs Aura: ~50KB)
+
+2. Better Runtime Performance:
+
+No overhead from Aura's custom rendering engine
+
+Direct DOM manipulation using web standards
+
+3. Memory Efficiency:
+
+Less memory consumption due to lighter framework
+
+Better garbage collection
+
+
+
+Development Benefits:
+
+1. Easier Learning Curve:
+
+Uses standard JavaScript (ES6+), HTML, CSS
+
+No need to learn Aura-specific syntax like {!v.attribute}
+
+2. Better Developer Tools:
+
+Standard browser DevTools work perfectly
+
+Better debugging experience
+
+IntelliSense support in VS Code
+
+3. Future-Proof:
+
+Based on web standards that evolve with the web
+
+Salesforce's strategic direction moving forward
+
+
+
+Real Project Experience:
+
+In my previous project, we migrated a dashboard from Aura to LWC:
+
+Before (Aura):
+
+15 seconds initial load time
+
+200KB total bundle size
+
+3 developers needed 2 weeks to understand codebase
+
+After (LWC):
+
+5 seconds initial load time
+
+80KB total bundle size
+
+New developers with JS background understood it in 2-3 days
+
+
+
+Interview Tips:
+
+Always provide specific numbers when possible (load times, bundle sizes)
+
+Mention real project experiences if you have them
+
+Emphasize that Salesforce is investing in LWC, not Aura
+
+Note that existing Aura components still work, but new development should use LWC
+
+Mention better mobile performance with LWC
+
+
+
+⚠️ Important Notes:
+
+Don't say Aura is "bad" - it was great for its time
+
+Acknowledge that some complex scenarios might still require Aura temporarily
+
+Show that you understand migration strategies
+
+Mention that Lightning App Builder works with both frameworks
+
+
+
+Follow-up Questions You Might Get:
+
+"When would you still use Aura?"
+
+Answer: For existing complex components that would be expensive to rewrite immediately
+
+"How do you handle Aura-to-LWC migration?"
+
+Answer: Gradual migration, starting with simpler components, maintaining APIs for compatibility
