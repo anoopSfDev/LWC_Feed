@@ -1,0 +1,55 @@
+Question 1
+What is Lightning Web Components (LWC)? How does it differ from Aura Components?
+Companies that asked this: TCS, Capgemini, Infosys, Wipro, Accenture, IBM
+
+Answer:
+Lightning Web Components is Salesforce's modern UI framework that was introduced in 2019. It's built on web standards like Custom Elements, Shadow DOM, and ES6+ JavaScript.
+
+Let me explain the key differences from Aura Components:
+
+Performance: LWC is much faster because it uses native browser APIs instead of the custom framework that Aura uses. For example, when I worked on a data table component, the LWC version loaded 40% faster than the Aura equivalent.
+
+Bundle Size: LWC components are smaller. An Aura component might be 50KB, while the same LWC component could be just 15KB.
+
+Learning Curve: If you know modern JavaScript and HTML, LWC is easier to learn. Aura has its own syntax like {!v.attribute}, while LWC uses standard JavaScript.
+
+Browser Support: LWC works on all modern browsers without needing additional polyfills.
+
+
+
+Example:
+
+Js
+
+export default class HelloWorld extends LightningElement {
+    @api greeting = 'Hello';
+    
+    get message() {
+        return `${this.greeting}, World!`;
+    }
+}
+html
+
+<template>
+    <p>{message}</p>
+</template>
+VS
+
+javascript
+// Aura Component (Legacy)
+({
+    doInit: function(component, event, helper) {
+        component.set("v.greeting", "Hello");
+    }
+})
+
+
+Interview Tips:
+
+Always mention performance benefits first
+
+Give a real project example if possible
+
+Don't just list differences, explain WHY LWC is better
+
+Mention that Salesforce is moving towards LWC
