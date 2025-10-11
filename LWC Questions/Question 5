@@ -1,0 +1,77 @@
+Question 3
+What are Web Components? How is LWC based on Web Component standards?
+Companies that asked this: Salesforce, Microsoft, Amazon, Cognizant, Genpact
+
+Answer:
+Web Components are a set of web platform APIs that allow you to create reusable custom HTML elements. They consist of four main technologies:
+
+1. Custom Elements - Define new HTML tags
+
+2. Shadow DOM - Encapsulated DOM and styling
+
+3. HTML Templates - Reusable markup templates
+
+4. ES Modules - Standard way to import/export JavaScript
+
+
+LWC is built on these standards, which means:
+
+Native Performance: No framework overhead, runs directly in the browser
+
+Future-proof: Based on web standards, not proprietary technology
+
+Interoperability: Can work with other web components and frameworks
+
+Developer Familiarity: Uses standard HTML, CSS, and JavaScript
+
+
+Example:
+
+Traditional Web Component:
+
+class HelloElement extends HTMLElement {
+    connectedCallback() {
+        this.innerHTML = '<p>Hello, World!</p>';
+    }
+}
+customElements.define('hello-element', HelloElement);
+
+LWC Equivalent:
+import { LightningElement } from 'lwc';
+ 
+export default class HelloWorld extends LightningElement {
+    connectedCallback() {
+        console.log('Component connected to DOM');
+    }
+}
+<template>
+    <p>Hello, World!</p>
+</template>
+
+
+How LWC Uses Web Standards:
+
+Custom Elements: LWC components become custom HTML elements
+
+<c-my-component></c-my-component>
+Shadow DOM: Provides style and DOM encapsulation.  Styles in component css file  only affect this component
+
+Templates: HTML templates with data binding
+
+<template>
+    <p>{greeting}</p>
+</template>
+ES Modules: Standard import/export syntax
+
+import { LightningElement, api } from 'lwc';
+export default class MyComponent extends LightningElement {}
+
+Interview Tips:
+
+Emphasize that LWC follows web standards, not proprietary frameworks
+
+Mention browser compatibility and performance benefits
+
+Explain that developers can leverage existing web development skills
+
+Note that this makes LWC future-proof
