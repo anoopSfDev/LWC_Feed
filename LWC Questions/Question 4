@@ -1,0 +1,77 @@
+Question 4
+What is Shadow DOM and how does LWC utilize it for encapsulation?
+Companies that asked this: TCS, Infosys, Capgemini, Ernst & Young, KPMG
+
+Answer:
+Shadow DOM is a web standard that provides encapsulation for DOM elements and CSS styles. Think of it like a private container where your component's HTML and CSS live separately from the main document.
+
+Benefits of Shadow DOM:
+
+Style Isolation: CSS in one component doesn't affect others
+
+DOM Encapsulation: Internal structure is hidden from outside
+
+No Global CSS Conflicts: Prevents style bleeding
+
+How LWC Uses Shadow DOM:
+When you create an LWC component, Salesforce automatically creates a Shadow DOM tree for it. This means your component's styles and DOM structure are completely isolated.
+
+Example:
+
+/* myComponent.css */
+.title {
+    color: red;
+    font-size: 24px;
+}
+ 
+.container {
+    background: yellow;
+    padding: 20px;
+}
+<!-- myComponent.html -->
+<template>
+    <div class="container">
+        <h1 class="title">My Component Title</h1>
+        <p>This content is in Shadow DOM</p>
+    </div>
+</template>
+Other Component:
+
+css
+/* anotherComponent.css */
+.title {
+    color: blue;  /* This won't affect myComponent's .title */
+    font-size: 12px;
+}
+Real-World Example:
+
+In my last project, I had two components on the same page - a header component and a card component. Both had a .title class, but because of Shadow DOM encapsulation:
+
+Header component's .title was blue and 18px
+
+Card component's .title was red and 14px
+
+They didn't interfere with each other
+
+Accessing Shadow DOM Elements:
+
+export default class MyComponent extends LightningElement {
+    renderedCallback() {
+        // Access elements within this component's Shadow DOM
+        const titleElement = this.template.querySelector('.title');
+        console.log(titleElement); // Works - element is in this shadow tree
+        
+        // Cannot access elements from other components
+        const outsideElement = document.querySelector('.other-component-title');
+        console.log(outsideElement); // null - not in this shadow tree
+    }
+}
+Interview Tips:
+
+Explain with a real-world analogy (like apartments in a building)
+
+Mention that this.template.querySelector() only searches within the component
+
+Emphasize how this prevents CSS conflicts in large applications
+
+Note that global styles still apply (like SLDS utilities)
