@@ -1,0 +1,73 @@
+Question 9
+What are getters and setters in LWC? How are they useful?
+Companies that asked this: TCS, Salesforce, Infosys, Accenture, Capgemini, IBM, Microsoft
+
+Answer:
+Getters:
+
+Read-only computed properties
+
+Automatically reactive — recalculates when dependent data changes
+
+Used for dynamic logic, formatting, or conditional rendering
+
+Cached until dependencies change (performance benefit)
+
+get fullName() {
+    return `${this.firstName} ${this.lastName}`;
+}
+ 
+get isFormValid() {
+    return this.email && this.firstName && this.lastName;
+}
+ 
+// CSS class computation
+get buttonClass() {
+    return this.isFormValid ? 'enabled' : 'disabled';
+}
+Setters:
+
+Property validation - Validate data before assignment
+
+Side effects - Trigger actions when property changes
+
+Data transformation - Modify data during assignment
+
+Common with @api for public property control
+
+// @api property with validation
+_recordId;
+ 
+@api
+get recordId() {
+    return this._recordId;
+}
+ 
+set recordId(value) {
+    if (value && value.length === 18) {
+        this._recordId = value;
+        this.loadData(); // Side effect
+    }
+}
+ 
+// Data transformation
+set userInput(value) {
+    this._userInput = value.trim().toLowerCase();
+}
+html
+
+<template>
+    <h2>Welcome, {fullName}!</h2>
+    <button class={buttonClass} disabled={isFormValid}>Submit</button>
+</template>
+
+
+Interview Tips:
+
+Emphasize @api patterns - Show validation with public properties
+
+Mention template integration - How getters appear in HTML
+
+Performance benefits - Getters cached until dependencies change
+
+Real examples - Form validation, computed styles, side effects
