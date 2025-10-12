@@ -1,1 +1,66 @@
+How lwc:if is Better than if:true?
 
+
+Answer
+
+1. Performance - Short-Circuit Evaluation
+
+if:true - All conditions are checked and rendered.
+
+<div if:true={isLoading}>Loading...</div>
+<div if:true={hasError}>Error!</div>
+lwc:if: Stops at the first true condition.
+
+<div lwc:if={isLoading}>Loading...</div>
+<div lwc:elseif={hasError}>Error!</div>
+<div lwc:else>No data</div>
+2. Better Readability
+
+if:true - Hard to follow logic:
+
+<div if:true={isAdmin}>Admin</div>
+<div if:true={isManager}>Manager</div>
+<div if:true={isUser}>User</div>
+lwc:if - Clear decision flow:
+
+<div lwc:if={isAdmin}>Admin</div>
+<div lwc:elseif={isManager}>Manager</div>
+<div lwc:else>User</div>
+3. Safer UI States
+
+if:true: Multiple flags can be true → Conflicting UI.
+
+lwc:if: Only one block renders at a time.
+
+
+
+When to Use which?
+
+* Use if:true for independent toggles:
+
+<!-- ✅ Independent permissions -->
+<button if:true={canEdit}>Edit</button>
+<button if:true={canDelete}>Delete</button>
+* Use lwc:if for mutually exclusive states:
+
+<!-- ✅ Only one state possible -->
+<div lwc:if={isLoading}>Loading...</div>
+<div lwc:elseif={hasError}>Error!</div>
+<div lwc:else>Content</div>
+
+
+Summary
+
+lwc:if is better than if:true because:
+
+Performance: Short-circuit evaluation stops at the first true condition
+
+Readability: Creates clear logical chains instead of scattered conditions
+
+Safety: Guarantees mutually exclusive states
+
+Efficiency: Creates fewer DOM nodes and evaluations
+
+Maintainability: Easier to debug and modify complex conditional logic
+
+However, if:true still has its place for independent boolean checks like permissions or feature flags.
