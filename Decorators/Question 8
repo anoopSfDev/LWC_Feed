@@ -1,0 +1,64 @@
+How do you handle conditional rendering in LWC? Explain if:true, if:false, lwc:if, and lwc:else
+Companies that asked this: TCS, Infosys, Capgemini, Salesforce, Accenture, Wipro
+
+Answer:
+LWC provides several ways to handle conditional rendering. Let me explain each approach and when to use them:
+
+Legacy Approach (Still supported):
+
+if:true and if:false - Simple boolean conditionals
+
+Works with any boolean expression
+
+Modern Approach (Recommended):
+
+lwc:if - More powerful conditional rendering
+
+lwc:elseif - Multiple conditions
+
+lwc:else - Default fallback
+
+Better performance and more readable
+
+Example:
+
+export default class ConditionalExample extends LightningElement {
+    isLoading = false;
+    hasError = false;
+    accounts = [];
+    userRole = 'admin';
+    
+    get hasData() {
+        return this.accounts.length > 0;
+    }
+    
+    get isAdmin() {
+        return this.userRole === 'admin';
+    }
+}
+HTML:
+
+<template>
+    <!-- LEGACY: if:true and if:false -->
+    <div if:true={isLoading}>Loading...</div>
+    <div if:false={isLoading}>Content loaded</div>
+    
+    <button if:true={isAdmin}>Admin Action</button>
+    
+    <!-- MODERN: lwc:if, lwc:elseif, lwc:else -->
+    <div lwc:if={isLoading}>
+        <lightning-spinner></lightning-spinner>
+    </div>
+    
+    <div lwc:elseif={hasError}>
+        <p>Error occurred!</p>
+    </div>
+    
+    <div lwc:elseif={hasData}>
+        <p>Showing {accounts.length} accounts</p>
+    </div>
+    
+    <div lwc:else>
+        <p>No data available</p>
+    </div>
+</template>
