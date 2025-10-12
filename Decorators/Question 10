@@ -1,0 +1,58 @@
+How do you make an LWC available in Lightning App Builder?
+Companies that asked this: Salesforce, TCS, Accenture, Deloitte, IBM, Infosys, Capgemini
+
+
+
+Answer:
+
+To make an LWC component available in Lightning App Builder, you need to configure the .js-meta.xml file with specific settings. This configuration file tells Salesforce where and how the component can be used.
+
+Essential Requirements:
+
+isExposed: true - Makes component visible in App Builder
+
+targets - Defines where component can be placed
+
+apiVersion - Must be 45.0 or higher (required in Spring '25)
+
+targetConfigs - Adds configurable properties (optional)"
+
+Basic Configuration Example:
+
+xml
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>58.0</apiVersion>
+    <isExposed>true</isExposed>
+    
+    <targets>
+        <target>lightning__RecordPage</target>
+        <target>lightning__AppPage</target>
+        <target>lightning__HomePage</target>
+    </targets>
+</LightningComponentBundle>
+Common Target Options:
+
+lightning__RecordPage - Record detail pages
+
+lightning__AppPage - Custom app pages
+
+lightning__HomePage - Home page
+
+lightning__Tab - Custom tabs
+
+lightning__FlowScreen - Flow screens
+
+lightning__UtilityBar - Utility bar
+
+Interview Tips:
+
+Emphasize isExposed="true" as the key requirement
+
+Mention different targets for different page types
+
+Show understanding of configurable properties with @api
+
+Give real examples of components that benefit from configuration
+
+Note API version requirement (shows current knowledge)
