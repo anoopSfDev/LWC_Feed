@@ -1,1 +1,123 @@
+Explain @api, @track, and @wire decorators with practical examples.
+Companies that asked this: TCS, Infosys, Capgemini, Accenture, Wipro, HCL Technologies, Cognizant
 
+Answer:
+Decorators are special annotations in LWC that add functionality to class properties and methods. Let me explain each one:
+
+@api Decorator: Makes properties and methods public
+
+Used for parent-child component communication
+
+Creates reactive properties that trigger re-rendering when changed
+
+Makes properties configurable in Lightning App Builder
+
+@track Decorator: Makes properties reactive (though less needed in modern LWC)
+
+Automatically detects changes and triggers re-rendering
+
+Mostly used for complex objects and arrays
+
+Modern LWC handles primitive reactivity automatically
+
+@wire Decorator: Connects component to Salesforce data
+
+Provides reactive data binding with automatic caching
+
+Updates UI automatically when data changes
+
+More efficient than imperative Apex calls for most cases
+
+Practical Examples:
+1. @api Decorated Properties (Public Inputs)
+
+@api recordId;          // Comes from record context (e.g., App Builder)
+@api title = 'Default'; // Can be customized in App Builder
+@api showDetails = false; // Boolean passed from parent
+
+2. @api Method (Public Method callable by parent)
+
+@api
+refreshData() {
+    this.loadAccountData();
+}
+3. @track Decorated Object (Reactive Complex Object)
+
+@track accountData = {
+    name: '',
+    industry: '',
+    contacts: []
+};
+Used for tracking changes in nested properties (complex types).
+
+⚠️ Without @track, LWC might not re-render for changes inside objects.
+
+
+
+4. Reactive Primitive Fields (No need for @track)
+
+searchTerm = '';     // Reacts to input changes
+isLoading = false;   // Used for spinner 
+stateerrorMessage = '';   // To show error messages
+Simple values like strings and booleans are reactive by default.
+
+5. @wire (Reactive Record Retrieval from Salesforce)
+
+@wire(getRecord, { 
+    recordId: '$recordId', 
+    fields: ['Account.Name', 'Account.Industry'] 
+})
+wiredAccount({ error, data }) {
+    if (data) {
+        this.accountData = {
+            ...this.accountData,
+            name: data.fields.Name.value,
+            industry: data.fields.Industry.value
+        };
+    } else if (error) {
+        this.errorMessage = 'Failed to load account data';
+    }
+}
+Auto-fetches record data whenever recordId changes.
+
+$recordId means it's reactive.
+
+6. @wire with Parameters (Search Term Usage)
+
+@wire(getAccountData, { searchTerm: '$searchTerm' })
+wiredSearchResults;
+Automatically fetches data when searchTerm updates.
+
+7. Updating Complex Object Reactively
+
+@track accountData = {
+    name: '',
+    industry: '',
+    contacts: []
+};
+ 
+addContact() {
+    const newContact = { name: 'New Contact' };
+ 
+    // ❌ Will not trigger re-rendering:
+    // this.accountData.contacts.push(newContact);
+ 
+    // ✅ Triggers reactivity:
+    this.accountData = {
+        ...this.accountData,
+        contacts: [...this.accountData.contacts, newContact]
+    };
+}
+Reactivity requires creating a new object, not modifying the old one.
+
+
+
+Interview Tips:
+
+Always explain WHEN to use each decorator, not just HOW
+
+Mention that @track is less needed in modern LWC
+
+Show understanding of reactivity and when it triggers re-rendering
+
+Give real examples of parent-child communication with @api
