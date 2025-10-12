@@ -1,0 +1,136 @@
+Question 2
+When should you use @track decorator? Is it still required in modern LWC?
+Companies that asked this: Salesforce, TCS, Deloitte, IBM, Tech Mahindra
+
+Answer:
+The @track decorator has evolved significantly in modern LWC. Let me explain when it's needed and when it's not:
+
+Modern LWC (API version 59+):
+
+Primitives are automatically reactive: strings, numbers, booleans
+
+@track is rarely needed for simple properties
+
+Still needed for complex objects and arrays where you modify nested properties
+
+When @track is NOT needed:
+
+Simple properties (string, number, boolean)
+
+When you replace the entire object/array
+
+When using proper immutable update patterns
+
+When @track IS needed:
+
+Modifying nested object properties directly
+
+Pushing/popping array elements directly
+
+Complex data structures with deep nesting"
+
+Practical Examples:
+
+export default class TrackExamples extends LightningElement {
+    
+    // ✅ Modern LWC - No @track needed
+    name = 'John Doe';           // Automatically reactive
+    age = 25;                    // Automatically reactive
+    isActive = true;             // Automatically reactive
+    
+    // ✅ No @track needed - replacing entire object
+    accountData = {};
+    updateAccount() {
+        this.accountData = { name: 'New Account', industry: 'Tech' };
+        // This triggers re-render automatically
+    }
+    
+    // ✅ No @track needed - replacing entire array
+    products = [];
+    loadProducts() {
+        this.products = [...newProducts];
+        // This triggers re-render automatically
+    }
+    
+    // ❌ @track NEEDED - Direct nested modification
+    @track customerInfo = {
+        personal: { name: '', age: 0 },
+        address: { street: '', city: '' },
+        preferences: []
+    };
+    
+    updateCustomerName() {
+        // Direct nested modification - needs @track
+        this.customerInfo.personal.name = 'Jane Doe';
+    }
+    
+    addPreference() {
+        // Direct array modification - needs @track
+        this.customerInfo.preferences.push('email notifications');
+    }
+    
+    // ✅ Alternative WITHOUT @track - Immutable updates
+    customerInfoNoTrack = {
+        personal: { name: '', age: 0 },
+        address: { street: '', city: '' },
+        preferences: []
+    };
+    
+    updateCustomerNameImmutable() {
+        // Create new object reference - no @track needed
+        this.customerInfoNoTrack = {
+            ...this.customerInfoNoTrack,
+            personal: {
+                ...this.customerInfoNoTrack.personal,
+                name: 'Jane Doe'
+            }
+        };
+    }
+    
+    addPreferenceImmutable() {
+        // Create new array reference - no @track needed
+        this.customerInfoNoTrack = {
+            ...this.customerInfoNoTrack,
+            preferences: [...this.customerInfoNoTrack.preferences, 'email notifications']
+        };
+    }
+  
+}
+
+
+Performance Comparison:
+
+// ❌ Overusing @track (performance impact)
+@track data1 = '';
+@track data2 = 0;
+@track data3 = false;
+@track data4 = [];
+ 
+// ✅ Modern approach (better performance)
+data1 = '';      // Automatically reactive
+data2 = 0;       // Automatically reactive  
+data3 = false;   // Automatically reactive
+data4 = [];      // Reactive when replaced
+ 
+@track complexData = {}; // Only when needed
+
+
+Real-World Decision Making:
+
+In my recent project, I had a form with user data:
+
+Without @track (Preferred):
+
+userData = { name: '', email: '', preferences: [] };
+ 
+updateEmail(newEmail) {
+    this.userData = { ...this.userData, email: newEmail };
+}
+With @track (When direct modification needed):
+
+@track userData = { name: '', email: '', preferences: [] };
+ 
+updateEmail(newEmail) {
+    this.userData.email = newEmail;  // Direct modification
+}
+I chose the first approach because it's more predictable and follows React-style immutability patterns.
