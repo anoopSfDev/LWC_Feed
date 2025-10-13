@@ -1,0 +1,157 @@
+Explain all LWC lifecycle hooks and their execution order.
+Companies that asked this: Salesforce, TCS, Infosys, Capgemini, Accenture, IBM, Wipro
+
+Answer:
+LWC lifecycle hooks are special methods that the framework calls automatically at different stages of a component's life. Understanding their execution order is crucial for proper component initialization and cleanup.
+
+The Main Lifecycle Hooks:
+
+constructor() - Component creation
+
+connectedCallback() - DOM insertion
+
+renderedCallback() - After rendering
+
+disconnectedCallback() - DOM removal
+
+errorCallback() - Error handling (special case
+
+
+
+LWC Lifecycle Execution Order :
+
+When a Lightning Web Component is created and used on a page, Salesforce follows a specific execution order (like a life story of the component). Here's how it works, step by step:
+
+1. constructor() – Component is created
+Think of this as the birth of the component.
+
+It's the first method called.
+
+Used to initialize local variables (not reactive).
+
+You can’t access DOM or @api properties here.
+
+⛔ Avoid server calls or DOM operations here.
+
+Example
+
+constructor() {
+    super();
+    console.log('1. Constructor called');
+    this.startTime = Date.now();
+}
+2. connectedCallback() – Component is added to the page
+
+This is like the component being placed on the screen.
+
+Called when the component is inserted into the DOM.
+
+Now you can access @api properties like recordId.
+
+Perfect for: fetching data, setting up event listeners, or loading libraries.
+
+⛔ Avoid accessing DOM elements directly — the HTML hasn’t finished rendering yet.
+
+Example
+
+connectedCallback() {
+    console.log('2. ConnectedCallback called');
+    this.loadInitialData(); // now it's safe
+}
+
+3. renderedCallback() – HTML is rendered
+
+This is where the component's visuals are ready on the page.
+
+Called after the component's template is rendered.
+
+Runs every time the component re-renders.
+
+Best place to access or manipulate DOM, initialize charts, set focus, etc.
+
+⛔ Don’t update tracked properties here without conditions — it can cause infinite loops.
+
+Example
+
+renderedCallback() {
+    if (this.renderCount === 1) {
+        this.initializeChart(); // safe to use DOM now
+    }
+}
+renderedCallback() {
+        const inputEl = this.template.querySelector('input');
+        if (inputEl) {
+            inputEl.style.backgroundColor = 'yellow'; // ✅ DOM manipulation
+            inputEl.placeholder = 'Enter your name';
+        }
+    }
+
+
+4. disconnectedCallback() – Component is removed
+
+Think of this as the component being destroyed or removed from the screen.
+
+Useful for cleaning up: removing event listeners, stopping timers, etc.
+
+Example:
+
+disconnectedCallback() {
+    clearInterval(this.refreshInterval);
+    this.cleanupEventListeners();
+}
+5. errorCallback(error, stack) – If an error happens
+
+This is the error boundary — catches errors in child components.
+
+Use it to log or show friendly error messages.
+
+Report to error tracking service
+
+Example:
+
+errorCallback(error, stack) {
+    console.error('Error:', error);
+    this.showErrorMessage('Something went wrong.');
+}
+Execution Order with Single Components
+
+constructor()
+
+connectedCallback()
+
+renderedCallback()
+
+disconnectedCallback()
+
+errorCallback(error, stack) (only if there's an error)
+
+
+Execution Order with Parent & Child Components
+
+Parent: constructor()
+
+Child: constructor()
+
+Parent: connectedCallback()
+
+Child: connectedCallback()
+
+Child: renderedCallback()
+
+Parent: renderedCallback()
+
+Child: disconnectedCallback()(On Child Component Removal)
+
+Parent: disconnectedCallback()(On Parent Component Removal)
+
+Parent: errorCallback(error, stack)(Only runs if the child throws an error during any lifecycle phase or rendering.)
+
+Interview Tips:
+
+Memorize the execution order - constructor → connected → rendered → disconnected
+
+Know what NOT to do in each hook (DOM access in constructor, etc.)
+
+Show cleanup patterns - Always clean up in disconnectedCallback
+
+Mention one-time vs repeated - renderedCallback runs multiple times
