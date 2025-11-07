@@ -1,0 +1,40 @@
+Question 6
+What is the purpose of the render() method in LWC?
+Companies that asked this: Salesforce, TCS, Deloitte, IBM, Microsoft
+
+Answer:
+The render() method in LWC is used for conditional template rendering. It allows you to dynamically choose which template to render based on component state or conditions. This is different from conditional rendering within a template using lwc:if/if:true.
+
+Key Points:
+
+Returns a template reference, not HTML content
+
+Called automatically by the LWC framework during rendering lifecycle
+
+Useful for completely different layouts based on conditions
+
+Performance benefit - only imports templates that are actually used
+
+Why Use It?
+
+Use render() when you have completely different layouts based on user role, status, or data type
+
+example
+
+import { LightningElement } from 'lwc';
+import adminTemplate from './myComponentAdmin.html';
+import userTemplate from './myComponentUser.html';
+import defaultTemplate from './myComponent.html';
+ 
+export default class MyComponent extends LightningElement {
+    role = 'admin'; // or 'user'
+ 
+    render() {
+        if (this.role === 'admin') {
+            return adminTemplate;
+        } else if (this.role === 'user') {
+            return userTemplate;
+        }
+        return defaultTemplate;
+    }
+}
