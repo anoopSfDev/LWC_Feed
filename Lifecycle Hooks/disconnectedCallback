@@ -1,0 +1,47 @@
+Question 3
+When would you use disconnectedCallback? Provide real-world examples.
+Companies that asked this: Salesforce, TCS, IBM, Accenture, Infosys, Capgemini
+
+Answer:
+disconnectedCallback is called when a component is removed from the DOM. It's crucial for cleanup operations to prevent memory leaks, performance issues, and unexpected behavior.
+
+Primary Uses:
+
+Remove event listeners - Prevent memory leaks
+
+Cancel ongoing operations - Abort API calls, clear timers
+
+Cleanup third-party libraries - Destroy charts, maps, plugins
+
+Unsubscribe from services - Platform events, message channels
+
+Clear references - Remove object references to help garbage collection
+
+
+Real-World Use Cases:
+
+Remove Event Listeners
+
+window.removeEventListener('resize', this.handleResize);
+✅ Use case: You added a global event (e.g., for responsive layout) in connectedCallback().
+
+Cancel Ongoing Operations
+
+clearTimeout(this.timerId);
+✅ Use case: You started a timer, and it needs to be aborted to save network resources.
+
+Destroy Third-party Libraries
+
+if (this.chart){ this.chart.destroy();}
+✅ Use case: You rendered a chart (Chart.js or D3) — it needs cleanup to prevent DOM pollution.
+
+Unsubscribe from Services
+
+this.subscription = null;
+unsubscribe(this.messageContext, this.subscription);
+✅ Use case: Unsubscribing from Lightning Message Service or Platform Events.
+
+Clear Object References
+
+this.largeDataObject = null;
+✅ Use case: Release large memory objects to help garbage collection.
