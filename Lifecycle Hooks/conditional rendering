@@ -1,0 +1,26 @@
+Question 7
+What is the difference between the render() method and conditional rendering (like lwc:if) in LWC?
+Asked by: Salesforce, TCS, Infosys, Cognizant
+
+Answer:
+The render() method and lwc:if/if:true are both used to conditionally render content in Lightning Web Components, but they serve different purposes and are best used in different scenarios.
+
+Aspect => Use Case
+render() Method => Completely different layouts
+lwc:if / if:true => Show/hide elements
+
+Aspect => Templates
+render() Method => Multiple template files
+lwc:if / if:true => Single template
+
+Aspect => Performance
+render() Method => Loads only needed template
+lwc:if / if:true => All elements in DOM
+
+Aspect => Complexity
+render() Method => Good for complex differences
+lwc:if / if:true => Good for simple conditions
+
+Aspect => Maintenance
+render() Method => Separate files to maintain
+lwc:if / if:true => Single template file
