@@ -1,0 +1,76 @@
+Question 4
+How do you implement error boundaries using errorCallback?
+Companies that asked this: Salesforce, IBM, TCS, Accenture, Microsoft
+
+Answer:
+errorCallback is LWC's error boundary mechanism that catches JavaScript errors in a component and its children. It prevents errors from crashing the entire application and allows for graceful error handling.
+
+Key Features:
+
+Catches errors in child components - Acts as an error boundary
+
+Provides error details - Error object and stack trace
+
+Allows graceful recovery - Show fallback UI instead of broken component
+
+Logs errors - Can report to error tracking services
+
+Doesn't catch all errors - Only certain types of JavaScript errors
+
+Limitations – Does not catch errors in:
+
+Asynchronous code (e.g. setTimeout, fetch)
+
+Event handlers
+
+The component itself (only its children)
+
+Example: Parent Component Using errorCallback()
+
+parentComponent.js
+
+import { LightningElement } from 'lwc';
+ 
+export default class ParentComponent extends LightningElement {
+    hasError = false;
+ 
+    errorCallback(error, stack) {
+        console.error('Error caught in parent:', error);
+        console.error('Stack trace:', stack);
+        this.hasError = true;
+    }
+}
+
+
+parentComponent.html
+
+<template>
+    <template if:true={hasError}>
+        <div class="error">Something went wrong. Please try again later.</div>
+    </template>
+    <template if:false={hasError}>
+        <c-child-component></c-child-component>
+    </template>
+</template>
+Example: Child Component Throwing an Error
+
+childComponent.js
+
+import { LightningElement } from 'lwc';
+ 
+export default class ChildComponent extends LightningElement {
+    connectedCallback() {
+        // Simulating an error
+        throw new Error('Simulated error in child');
+    }
+}
+
+💡 Interview Tips:
+
+Explain error boundary concept - Catches errors in child components
+
+Show graceful degradation - Fallback UI instead of broken component
+
+Mention what's NOT caught - Async errors, event handlers, timers
+
+Emphasize user experience - Friendly messages and recovery options
