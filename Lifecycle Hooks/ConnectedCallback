@@ -1,0 +1,104 @@
+Question 2
+What's the difference between connectedCallback and renderedCallback?
+Companies that asked this: Salesforce, TCS, Infosys, IBM, Accenture, Capgemini
+
+Answer:
+connectedCallback and renderedCallback are both lifecycle hooks, but they're called at different stages and have different capabilities:
+
+connectedCallback:
+
+Called once when component is inserted into DOM
+
+DOM elements not ready - template not rendered yet
+
+Perfect for setup - event listeners, data loading, subscriptions
+
+@api properties available - can access parent-provided data
+
+renderedCallback:
+
+Called after every render - multiple times during component lifecycle
+
+DOM elements ready - can access and manipulate template elements
+
+Perfect for DOM work - focus elements, initialize libraries, resize handling
+
+Be careful of infinite loops - don't modify tracked properties unnecessarily
+
+Example
+
+import { LightningElement, api, track } from 'lwc';
+export default class CallbackComparison extends LightningElement {
+    @api recordId;
+    @track data = [];
+    renderCount = 0;
+    
+    // CONNECTED CALLBACK - Setup Phase
+    connectedCallback() {
+        console.log('ConnectedCallback - Setup Phase');
+        
+        // ✅ GOOD: Setup operations
+        this.setupEventListeners();
+        this.loadInitialData();
+        
+        // ✅ GOOD: Access @api properties
+        console.log('Record ID:', this.recordId); // Available
+        
+        // ❌ BAD: DOM access won't work
+        const element = this.template.querySelector('.my-element');
+        console.log('Element:', element); // null - template not rendered
+    }
+    
+    // RENDERED CALLBACK - DOM Ready Phase  
+    renderedCallback() {
+        this.renderCount++;
+        console.log(`RenderedCallback - Render #${this.renderCount}`);
+        
+        // ✅ GOOD: DOM access works
+        const element = this.template.querySelector('.my-element');
+        console.log('Element:', element); // Returns actual DOM element
+        
+        // ✅ GOOD: One-time DOM initialization
+        if (this.renderCount === 1) {
+            this.initializeChart();
+            this.focusFirstInput();
+        }
+        
+        // ✅ GOOD: Update DOM based on data changes
+        this.updateChartData();
+        
+        // ❌ BAD: Avoid infinite loops
+        // this.data = []; // This would trigger another render!
+    }
+    
+    setupEventListeners() {
+        window.addEventListener('resize', this.handleResize);
+    }
+    
+    async loadInitialData() {
+        this.data = await getRecordData({ recordId: this.recordId });
+    }
+    
+    initializeChart() {
+        const canvas = this.template.querySelector('canvas');
+        if (canvas) {
+            this.chart = new Chart(canvas, { type: 'bar', data: this.data });
+        }
+    }
+    
+    focusFirstInput() {
+        const firstInput = this.template.querySelector('input');
+        if (firstInput) {
+            firstInput.focus();
+        }
+    }
+}
+💡 Interview Tips:
+
+Emphasize timing - connected for setup, rendered for DOM
+
+Show one-time patterns - use flags to prevent repeated initialization
+
+Mention infinite loop prevention - be careful what you modify in renderedCallback
+
+Give real examples - data loading vs DOM manipulation scenarios
