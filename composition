@@ -1,0 +1,36 @@
+Question 1
+How do you compose components in LWC, and what are the benefits of component composition?
+Companies that asked this: Salesforce, Microsoft, Google, Amazon, Oracle
+
+Answer:
+In Lightning Web Components (LWC), component composition refers to the practice of combining smaller, reusable components to build more complex UIs. This is typically done by embedding child components inside a parent component’s HTML template.
+
+Example of Composition:
+
+Let’s say we have a child component named c-contact-card that displays a contact’s details.
+In the parent component's HTML:
+
+<template>
+  <c-contact-card contact={contact}></c-contact-card>
+</template>
+Here, contact is a property passed from the parent to the child via a public property marked with @api in the child component's JavaScript.
+
+Benefits of Component Composition:
+
+Reusability: Small components can be reused across different parts of the app, reducing redundancy.
+
+Separation of Concerns: Logic and UI are separated into different, focused components.
+
+Maintainability: Changes in one component do not impact others if the interface remains consistent.
+
+Improved Testing: Smaller components are easier to test in isolation.
+
+Encapsulation: Each component manages its own state and behavior, leading to more predictable outcomes.
+
+Interview Tips:
+
+Be prepared to explain how data flows from parent to child (@api) and how to use custom events for child-to-parent communication.
+
+Mention real scenarios where you split a large component into smaller, reusable pieces.
+
+If asked, discuss performance benefits due to LWC's shadow DOM and rendering optimization when composing components.
