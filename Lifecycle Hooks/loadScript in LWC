@@ -1,0 +1,58 @@
+Question 5
+In which lifecycle hook would you use loadScript in LWC and why?
+Companies that asked this: Salesforce, TCS, IBM, Accenture, Infosys
+
+Answer:
+loadScript should be used in renderedCallback() because it needs DOM elements to be available for third-party library initialization. However, you should use proper patterns to avoid loading the script multiple times.
+
+Why renderedCallback():
+
+DOM elements are ready - Libraries can attach to elements
+
+Template is fully rendered - All containers and targets exist
+
+Can access elements - Use this.template.querySelector() safely
+
+Library initialization possible - Can immediately initialize after loading
+
+Why NOT other hooks:
+
+constructor(): No DOM access, too early
+
+connectedCallback(): DOM not rendered yet, elements not available
+
+Example
+
+import { LightningElement } from 'lwc';
+import { loadScript } from 'lightning/platformResourceLoader';
+import chartJs from '@salesforce/resourceUrl/ChartJS';
+ 
+export default class ChartComponent extends LightningElement {
+    isChartJsInitialized = false;
+ 
+    renderedCallback() {
+        if (this.isChartJsInitialized) return;
+ 
+        this.isChartJsInitialized = true;
+ 
+        loadScript(this, chartJs)
+            .then(() => {
+                const ctx = this.template.querySelector('canvas').getContext('2d');
+                new Chart(ctx, {
+                    type: 'bar',
+                    data: { labels: ['A', 'B'], datasets: [{ data: [10, 20] }] },
+                });
+            })
+            .catch(error => {
+                console.error('Failed to load script', error);
+            });
+    }
+}
+💡 Interview Tips:
+Emphasize DOM readiness - Why renderedCallback() is necessary
+
+Show prevention patterns - Avoid loading scripts multiple times
+
+Mention error handling - Graceful fallbacks when loading fails
+
+Give real examples - Chart libraries, maps, date pickers that need DOM elements
