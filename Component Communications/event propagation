@@ -1,0 +1,65 @@
+How do you prevent event propagation in LWC?
+Companies that asked this: KPMG, Salesforce, TCS, IBM, Accenture, Infosys
+
+Answer:
+Event propagation in LWC can be prevented using standard DOM methods: stopPropagation() and preventDefault().
+
+Methods:
+
+event.stopPropagation() - Stops event from bubbling up to parent elements
+
+event.preventDefault() - Prevents default browser behavior (like form submission)
+
+Example:
+
+We have a parent component that contains a child component with a form. When the user clicks the Submit button:
+
+The child stops the event from bubbling.
+
+It also prevents the default form submission behavior.
+
+parentComponent.html
+
+<template>
+    <div onclick={handleParentClick} style="border: 2px solid blue; padding: 20px;">
+        <h2>Parent Component</h2>
+        <c-child-component></c-child-component>
+    </div>
+</template>
+parentComponent.js
+
+import { LightningElement } from 'lwc';
+ 
+export default class ParentComponent extends LightningElement {
+    handleParentClick() {
+        console.log('Parent: Click event received');
+        alert('Parent received click — bubbling worked!');
+    }
+}
+childComponent.html
+
+<template>
+    <form onsubmit={handleSubmit}>
+        <h3>Child Component</h3>
+        <input type="text" placeholder="Type something..." />
+        <button type="submit">Submit</button>
+    </form>
+</template>
+childComponent.js
+
+import { LightningElement } from 'lwc';
+ 
+export default class ChildComponent extends LightningElement {
+    handleSubmit(event) {
+        event.preventDefault();       // 🔒 Prevents form from reloading the page
+        event.stopPropagation();      // 🔕 Prevents bubbling to parent
+ 
+        console.log('Child: Form submitted');
+        alert('Child handled form submit. No bubbling, no reload.');
+    }
+}
+💡 Interview Tips:
+
+Show understanding of when to stop vs allow propagation
+
+Mention both methods - stopPropagation() and preventDefault()
