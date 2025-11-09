@@ -1,0 +1,33 @@
+How do you communicate between two unrelated LWCs on the same page?
+Companies that asked this: Salesforce, TCS, Capgemini, Infosys, Wipro, Accenture, IBM, Deloitte, Cognizant, PwC, KPMG
+
+Answer:
+There are two approaches for communication between unrelated Lightning Web Components on the same page:
+
+1. Lightning Message Service (LMS) – Recommended
+
+LMS is use to communicate between components in a single Lightning page or across multiple pages
+
+It works between Lightning web components, Aura components, and Visualforce pages in any tab or in any pop-out window in Lightning Experience.
+
+It also works across namespaces.
+
+
+⚠️ Limitations:
+
+LMS does not work in:
+
+Salesforce Tabs + Visualforce sites
+
+Visualforce pages in Experience Builder sites
+
+
+2. pubsub Module – Legacy Option
+
+The pubsub module is a custom JavaScript-based publish-subscribe pattern, primarily used in environments where LMS isn’t supported (e.g., legacy apps)
+
+⚠️ Limitations:
+
+Not officially supported or maintained by Salesforce.
+
+Recommended Links - https://developer.salesforce.com/docs/platform/lwc/guide/events-pubsub.html
