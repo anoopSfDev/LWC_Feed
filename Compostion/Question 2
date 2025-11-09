@@ -1,0 +1,81 @@
+Question 2
+How can a parent component set properties on its child components in LWC? Provide a code example.
+Companies that asked this: Salesforce, TCS, Infosys, Accenture, Wipro
+
+Answer:
+Parent components set properties on child components by using the @api decorator to expose public properties in the child, then binding values through attributes in the parent template.
+child Component (Exposes Public Properties):
+
+contactCard.js
+
+import { LightningElement, api } from 'lwc';
+ 
+export default class ContactCard extends LightningElement {
+    @api contactName;
+    @api contactEmail;
+    @api isActive;
+    @api recordCount;
+}
+
+contactCard.html
+
+<template>
+    <div class="contact-card">
+        <h3>{contactName}</h3>
+        <p>Email: {contactEmail}</p>
+        <p>Status: {isActive}</p>
+        <p>Records: {recordCount}</p>
+    </div>
+</template>
+
+Parent Component (Sets Properties on Child):
+
+contactList.js
+
+import { LightningElement } from 'lwc';
+ 
+export default class ContactList extends LightningElement {
+    contact = {
+        name: 'John Doe',
+        email: 'john@example.com'
+    };
+    
+    activeStatus = true;
+    totalRecords = 25;
+}
+contactList.html
+
+<template>
+    <c-contact-card 
+        contact-name={contact.name}
+        contact-email={contact.email}
+        is-active={activeStatus}
+        record-count={totalRecords}>
+    </c-contact-card>
+</template>
+
+Key Points:
+
+JavaScript properties use camelCase (contactName)
+
+HTML attributes use kebab-case (contact-name)
+
+Primitive values (string, number, boolean) are preferred
+
+Data flows one-way from parent to child
+
+Child components treat received properties as read-only
+
+
+
+Interview Tips:
+
+Emphasize the @api decorator makes properties public
+
+Mention the camelCase vs kebab-case naming convention
+
+Show understanding that data flows one-way from parent to child
+
+Explain that child components should treat properties as read-only
+
+Demonstrate that property updates in parent automatically update child
