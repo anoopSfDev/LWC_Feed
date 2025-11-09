@@ -1,0 +1,65 @@
+How do you pass markup or content from a parent to a child component using slots in LWC?
+Companies that asked this: Salesforce, Microsoft, Google, Oracle, Adobe
+
+Answer:
+Slots are placeholders in child components that allow parents to pass markup content into specific areas.
+
+Unnamed Slot:
+
+<!-- Child Component -->
+<template>
+    <div class="card">
+        <slot></slot> <!-- Content goes here -->
+    </div>
+</template>
+<!-- Parent Component -->
+<template>
+    <c-card>
+        <p>This content goes into the slot</p>
+    </c-card>
+</template>
+Named Slots:
+
+<!-- Child Component -->
+<template>
+    <header>
+        <slot name="header">Default Header</slot>
+    </header>
+    <main>
+        <slot>Default Content</slot>
+    </main>
+    <footer>
+        <slot name="footer">Default Footer</slot>
+    </footer>
+</template>
+<!-- Parent Component -->
+<template>
+    <c-layout>
+        <h1 slot="header">Custom Header</h1>
+        <p>Main content here</p>
+        <div slot="footer">Footer content</div>
+    </c-layout>
+</template>
+
+
+Key Points:
+
+Unnamed slot: <slot></slot> - single content area
+
+Named slots: <slot name="header"></slot> - multiple targeted areas
+
+Default content: Child provides fallback if no content passed
+
+Flexible composition: Parent controls what goes where
+
+
+
+Interview Tips:
+
+Explain slots are placeholders for parent-provided content
+
+Show difference between named and unnamed slots
+
+Mention default content capability
+
+Emphasize flexible component composition benefits
