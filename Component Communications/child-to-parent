@@ -1,0 +1,87 @@
+Explain child-to-parent communication using custom events with examples.
+Companies that asked this: Salesforce, TCS, Infosys, Capgemini, Accenture, IBM, Wipro
+
+Answer:
+Child-to-parent communication in LWC is achieved using custom events. The child component dispatches a custom event with data, and the parent component listens for that event and handles it.
+
+CustomEvent Syntax
+
+const event = new CustomEvent('eventname', {
+    detail: data,           // Data to pass (any type)
+    bubbles: boolean,       // Default: false
+    composed: boolean,      // Default: false  
+    cancelable: boolean     // Default: false
+});
+this.dispatchEvent(event);
+detail: The actual data you want to send to the parent component (string, object, array, etc.)
+
+bubbles: Allows the event to travel up through parent elements in the DOM tree
+
+composed: Lets the event cross shadow DOM boundaries (useful for deeply nested components)
+
+cancelable: Enables the event to be stopped/cancelled using preventDefault() method
+
+
+
+Basic Example
+
+Child Component (childComponent.js)
+
+import { LightningElement } from 'lwc';
+export default class ChildComponent extends LightningElement {
+    handleButtonClick() {
+        // Create custom event with data
+        const event = new CustomEvent('datapass', {
+            detail: { 
+                message: 'Hello from child!',
+                value: 42 
+            }
+        });
+        
+        // Dispatch the event
+        this.dispatchEvent(event);
+    }
+}
+Child Template (childComponent.html)
+
+<template>
+    <lightning-button 
+        label="Send Data to Parent" 
+        onclick={handleButtonClick}>
+    </lightning-button>
+</template>
+Parent Template (parentComponent.html)
+
+<template>
+    <div>
+        <h3>Parent Component</h3>
+        <p>Message: {receivedMessage}</p>
+        <p>Value: {receivedValue}</p>
+        
+        <!-- Listen for custom event -->
+        <c-child-component ondatapass={handleDataFromChild}>
+        </c-child-component>
+    </div>
+</template>
+Parent Component (parentComponent.js)
+
+import { LightningElement } from 'lwc';
+export default class ParentComponent extends LightningElement {
+    receivedMessage = '';
+    receivedValue = 0;
+    handleDataFromChild(event) {
+        // Access data from event.detail
+        this.receivedMessage = event.detail.message;
+        this.receivedValue = event.detail.value;
+        
+        console.log('Received:', event.detail);
+    }
+}
+
+💡 Interview Tips:
+
+Emphasize event.detail - Where data is passed
+
+Show event naming conventions - Clear, descriptive names
+
+Mention bubbling - For multi-level communication
