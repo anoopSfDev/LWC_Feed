@@ -1,0 +1,34 @@
+What is Lightning Message Service (LMS)? How is it different from PubSub?
+Companies that asked this: Salesforce, TCS, Capgemini, Infosys, Wipro, Accenture, IBM, Deloitte, Cognizant, PwC, KPMG
+
+Answer
+Lightning Message Service (LMS) is Salesforce's modern, official communication framework that enables publish-subscribe communication between Visualforce pages, Aura components, and Lightning Web Components within Lightning Experience.
+
+Key Differences:
+
+| Aspect                 | Lightning Message Service (LMS)                                     | PubSub Module                                      |
+|-------------------------|--------------------------------------------------------------------|----------------------------------------------------|
+| **Support Status**      | Officially supported by Salesforce                                 | **Not officially supported or maintained**         |
+| **Scope**               | Works across navigation tabs, utility bars, pop-out windows        | Restricted to single page only                     |
+| **Framework Support**   | Works with LWC, Aura, and Visualforce                              | Primarily designed for LWC                         |
+| **Implementation**      | Built-in Salesforce feature                                        | External module from GitHub                        |
+| **Metadata**            | Uses LightningMessageChannel metadata                              | No metadata required                               |
+| **Cleanup**             | Automatic cleanup on component destroy                             | Manual unregistration required                     |
+| **Namespace Support**   | Works across namespaces                                            | Limited namespace support                          |
+| **Security**            | Secure by default with namespace isolation                         | Basic security                                     |
+
+
+
+Interview Tips:
+
+Always emphasize that LMS is the official, supported solution
+
+Mention that PubSub is deprecated and not maintained
+
+Explain LMS works across different Lightning Experience areas, not just same page
+
+Show understanding that LMS requires metadata setup but provides better security
+
+Demonstrate knowledge that LMS supports cross-framework communication (LWC ↔ Aura ↔ Visualforce)
+
+Don't recommend PubSub unless specifically asked about legacy scenarios
