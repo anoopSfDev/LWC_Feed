@@ -1,0 +1,57 @@
+Explain MessageContext and how to use it in LWC.
+Companies that asked this: Salesforce, TCS, Capgemini, Infosys, Wipro, Accenture, IBM, Deloitte, Cognizant, PwC, KPMG
+
+Answer:
+MessageContext is a special object provided by Lightning Message Service (LMS) in Salesforce. It contains metadata and context about the Lightning Web Component (LWC) that is using the LMS APIs.
+
+You need the MessageContext to publish or subscribe to messages on a Lightning message channel.
+
+
+
+There are two ways to use it
+
+Option 1: @wire(MessageContext) (Recommended for UI Components)
+
+This is the simplest and most common approach used directly in LWC components that extend LightningElement.
+
+import { LightningElement, wire } from 'lwc';
+import { MessageContext, publish } from 'lightning/messageService';
+import myMessageChannel from '@salesforce/messageChannel/MyMessageChannel__c';
+ 
+export default class MyComponent extends LightningElement {
+    @wire(MessageContext)
+    messageContext;
+ 
+    handleClick() {
+        const payload = { someData: 'example' };
+        publish(this.messageContext, myMessageChannel, payload);
+    }
+}
+Advantage: No need to manually clean up subscriptions—Salesforce automatically handles it when the component is destroyed.
+
+Option 2: createMessageContext() (For Non-UI or Service Components)
+
+Use this when you need more control over context lifecycle or in utility modules and service classes that don't extend LightningElement.
+
+import {
+    createMessageContext,
+    releaseMessageContext,
+    publish
+} from 'lightning/messageService';
+import myMessageChannel from '@salesforce/messageChannel/MyMessageChannel__c';
+ 
+const messageContext = createMessageContext();
+ 
+publish(messageContext, myMessageChannel, { someData: 'example' });
+ 
+// Don’t forget to release the context manually when done
+releaseMessageContext(messageContext);
+⚠️ Important: You must manually call releaseMessageContext(messageContext) to avoid memory leaks
+
+💡 Interview Tips:
+
+Always mention that MessageContext is required for all LMS operations
+
+Explain the difference between @wire and createMessageContext approaches
+
+Emphasize importance of cleanup in disconnectedCallback.
