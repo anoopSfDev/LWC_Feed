@@ -1,0 +1,34 @@
+How do you perform CRUD operations in Lightning Web Components using Lightning Data Service?
+Companies that asked this: Salesforce, TCS, Capgemini, Infosys, Wipro, Accenture, IBM, Deloitte, Cognizant, PwC, KPMG
+
+Answer:
+Lightning Data Service (LDS) enables you to perform CRUD (Create, Read, Update, Delete) operations in Lightning Web Components without writing Apex code. LDS respects field-level security (FLS), object-level CRUD permissions, and sharing rules, ensuring secure and compliant data access.
+
+CRUD Operations in LWC using LDS:
+
+Create Record – Use the createRecord() function from lightning/uiRecordApi.
+
+Read Record – Use the getRecord wire adapter from lightning/uiRecordApi.
+
+Update Record – Use the updateRecord() function.
+
+Delete Record – Use the deleteRecord() function.
+
+
+
+Advantages of Using LDS in LWC:
+
+No need to write Apex for basic CRUD.
+
+Built-in support for:
+
+FLS (Field-Level Security)
+
+Sharing rules
+
+CRUD permissions
+
+LDS automatically handles cache and performance optimizations.
+
+Better user experience with less boilerplate code.
+
