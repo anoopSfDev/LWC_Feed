@@ -1,0 +1,91 @@
+What are the different ways to work with Lightning Data Service in LWC and when would you use each approach?
+Companies that asked this: Salesforce, Belong, Walmart, American Express, Paypal, TCS, Capgemini, Infosys, Wipro, Accenture, IBM, Deloitte, Cognizant, PwC, KPMG
+
+Answer:
+Lightning Data Service provides three main approaches to perform operations on data and access metadata in Lightning Web Components:
+
+1. Base Components (Recommended for Forms)
+
+Components:
+
+lightning-record-form: For quickly creating, viewing, or editing records with automatic layout and mode detection.
+
+lightning-record-edit-form: For editing records with custom field selection and layout.
+
+lightning-record-view-form: For displaying records in a read-only format.
+
+When to Use:
+
+Rapid form development with minimal custom logic.
+
+Standard CRUD operations where Salesforce handles layout, validation, and error handling.
+
+Scenarios where you want built-in field-level security and automatic UI update
+
+2. Wire Adapters and Functions (lightning/ui*Api modules)
+
+Key Wire Adapters:
+
+getRecord - Retrieve single record
+
+getRecords - Retrieve multiple records
+
+getObjectInfo - Object metadata
+
+getPicklistValues: Fetch picklist values for a specific field.
+
+getRelatedListRecords: Retrieve records from a related list of a parent record.
+
+Functions: Programmatic record manipulation.
+
+createRecord - Create new records
+
+updateRecord - Update existing records
+
+deleteRecord - Delete records
+
+When to Use:
+
+Custom UI or business logic is required.
+
+Need to process or transform data before display.
+
+Fine-grained control over which fields or records are accessed.
+
+Implementing custom validation or complex workflows
+
+3. GraphQL API Wire Adapter
+
+Purpose:
+
+Modern query language for flexible data fetching
+
+Single request for complex, related data
+
+Reduced over-fetching of unnecessary data
+
+When to Use:
+
+Fetching complex, related datasets across multiple objects.
+
+Reducing over-fetching and under-fetching of data.
+
+Modern development scenarios needing flexible, efficient data retrieval
+
+
+Interview Tips:
+
+Emphasize that all three approaches use the same underlying LDS cache
+
+Show understanding of when each approach is most appropriate
+
+Mention that base components are fastest for simple forms
+
+Explain wire adapters provide the most flexibility
+
+Note that GraphQL is newest and most efficient for complex data needs
+
+Demonstrate knowledge that these can be combined in the same component
+
+Don't forget to mention they all respect the same security and sharing rules
+
