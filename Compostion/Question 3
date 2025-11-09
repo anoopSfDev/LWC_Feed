@@ -1,0 +1,66 @@
+Explain the data flow direction in LWC. How does it differ from Aura?
+Companies that asked this: Salesforce, Oracle, IBM, Microsoft, Adobe
+
+Answer:
+LWC enforces one-way data flow (data down, events up), while Aura supports two-way data binding.
+
+LWC Data Flow (One-Way):
+
+// Parent Component
+export default class Parent extends LightningElement {
+    @track userName = 'John';
+    
+    handleUpdate(event) {
+        this.userName = event.detail.name; // Parent updates data
+    }
+}
+<!-- Parent Template -->
+<c-child name={userName} onupdate={handleUpdate}></c-child>
+// Child Component - Read-only properties
+export default class Child extends LightningElement {
+    @api name;
+    
+    handleChange() {
+        // ❌ Cannot mutate: this.name = 'Jane';
+        // ✅ Must fire event up
+        this.dispatchEvent(new CustomEvent('update', {
+            detail: { name: 'Jane' }
+        }));
+    }
+}
+Aura Data Flow (Two-Way):
+
+html
+<!-- Aura - Direct two-way binding -->
+<aura:component>
+    <aura:attribute name="userName" type="String"/>
+    
+    <!-- Child can directly modify parent data -->
+    <c:childComponent userName="{!v.userName}"/>
+</aura:component>
+
+Key Differences:
+| LWC                                | Aura                                 |
+|------------------------------------|--------------------------------------|
+| **One-way:** Data down, events up  | **Two-way:** Direct binding          |
+| Child properties are **read-only** | Child can **mutate parent data**     |
+| **Predictable** updates            | **Automatic** updates                |
+| **Easier debugging**               | **More complex** state tracking      |
+
+Benefits of One-Way Flow:
+
+Predictable - data changes only in parent
+
+Debuggable - clear communication path
+
+Maintainable - prevents unexpected side effects
+
+Interview Tips:
+
+Emphasize "data down, events up" principle
+
+Mention read-only nature of child properties in LWC
+
+Explain that Aura allows direct two-way binding
+
+Highlight debugging and predictability benefits
