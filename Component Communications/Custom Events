@@ -1,0 +1,103 @@
+What is composed in Custom Events in LWC?
+Companies that asked this: Deloitte, KPMG, Salesforce, TCS, Accenture, Infosys, Cognizant
+
+Answer:
+The composed property in custom events determines whether an event can cross Shadow DOM boundaries. In LWC, components are encapsulated within their own Shadow DOMs, so by default, events do not propagate beyond a component’s boundary.
+
+Key Points:
+
+composed: false (default) - Event stays within the same Shadow DOM tree
+
+composed: true - Event can cross Shadow DOM boundaries
+
+Essential for complex component hierarchies where components aren't direct parent-child
+
+Works with bubbles: true for cross-component communication
+
+
+Example
+
+I’ll demonstrate how a custom event can travel from:
+
+Child → Parent → Grandparent
+
+Component Hierarchy
+grandparent component
+
+└── parent component
+
+    └── child  component(event source)
+
+
+
+Event Flow
+
+A CustomEvent('notify') is dispatched in childComponent.
+
+Because the event uses { bubbles: true, composed: true }, it:
+
+Bubbles up to parentComponent
+
+Crosses the Shadow DOM boundary
+
+Reaches grandparentComponent
+
+childComponent.js
+
+import { LightningElement } from 'lwc';
+ 
+export default class ChildComponent extends LightningElement {
+    handleClick() {
+        this.dispatchEvent(
+            new CustomEvent('notify', {
+                bubbles: true,
+                composed: true,
+                detail: { message: 'Hello from Child!' }
+            })
+        );
+    }
+}
+childComponent.html
+
+<template>
+    <button onclick={handleClick}>Notify Grandparent</button>
+</template>
+parentComponent.html
+
+<template>
+    <div style="border: 2px solid blue; padding: 10px;">
+        <p>Parent Component</p>
+        <c-child-component></c-child-component>
+    </div>
+</template>
+parentComponent.js
+
+import { LightningElement } from 'lwc';
+ 
+export default class ParentComponent extends LightningElement {}
+grandparentComponent.html
+
+<template>
+    <div style="border: 2px solid red; padding: 10px;">
+        <p>Grandparent Component</p>
+        <c-parent-component onnotify={handleNotify}></c-parent-component>
+    </div>
+</template>
+grandparentComponent.js
+
+import { LightningElement } from 'lwc';
+ 
+export default class GrandparentComponent extends LightningElement {
+ 
+    // This will work because of composed: true
+        this.addEventListener('notify', (event) => {
+            console.log('Grandparent caught bubbling event:', event.detail.message);
+            // Event continues bubbling (though it's already at the top)
+        });
+ 
+     // Template event handler (also works)
+    handleNotify(event) {
+        const msg = event.detail.message;
+        alert('Grandparent received: ' + msg);
+    }
+}
