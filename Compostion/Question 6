@@ -1,0 +1,37 @@
+Compare passing data through slots versus passing data through properties. When would you use each?
+Companies that asked this: Salesforce, Oracle, IBM, Microsoft, Adobe
+
+Answer:
+Properties pass data values that child components process and display, while slots pass pre-built markup/UI content that gets inserted into specific locations.
+
+Key Differences:
+
+| Properties                            | Slots                               |
+|---------------------------------------|-------------------------------------|
+| Pass **data values**                  | Pass **markup/components**          |
+| Child **controls rendering**          | Parent **controls content**         |
+| **Reactive** to data changes          | **Static** markup insertion         |
+| **Type-safe** (primitives preferred)  | **Flexible** (any markup)           |
+
+
+When to Use Properties:
+
+Passing primitive data (strings, numbers, booleans)
+
+Child component needs to process or transform the data
+
+Data-driven components (tables, forms, charts)
+
+When you want reactive updates based on data changes
+
+When to Use Slots:
+
+Passing complex UI components or markup
+
+Parent wants full control over content structure
+
+Building layout/container components
+
+When content structure is variable or complex
+
+Composition-based designs
