@@ -1,0 +1,55 @@
+What is event bubbling  in LWC ?
+Companies that asked this: Salesforce, IBM, TCS, Microsoft, Accenture
+
+Answer:
+Event bubbling is the process where an event originates from a child component or element and then propagates upward through its parent components.
+
+In LWC, when you dispatch a custom event with bubbles: true, it can be caught by parent components in the DOM tree.
+
+
+Example
+
+Child component dispatches a CustomEvent('notify') with { bubbles: true }.
+
+Parent component listens for the onnotify event using native HTML syntax.
+
+childComponent.js
+
+import { LightningElement } from 'lwc';
+ 
+export default class ChildComponent extends LightningElement {
+    handleClick() {
+        // Dispatch a bubbling event
+        this.dispatchEvent(new CustomEvent('notify', {
+            bubbles: true,
+            detail: { message: 'Child says hello!' }
+        }));
+    }
+}
+2. childComponent.html
+
+<template>
+    <button onclick={handleClick}>Notify Parent</button>
+</template>
+
+
+3. parentComponent.html
+
+<template>
+    <div onnotify={handleNotify}>
+        <c-child-component></c-child-component>
+    </div>
+</template>
+
+4. parentComponent.js
+
+import { LightningElement } from 'lwc';
+ 
+export default class ParentComponent extends LightningElement {
+    handleNotify(event) {
+        alert(`Received from child: ${event.detail.message}`);
+    }
+}
+The event will bubble up from child to parent inside the shadow DOM, so parent can handle it.
+
+The event will not cross the shadow DOM boundary, so grandparent cannot handle it.
