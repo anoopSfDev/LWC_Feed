@@ -1,0 +1,15 @@
+How and When Does LDS Cache Entry Expire?
+Companies that asked this: Salesforce, Google, ANZ Bank, NAB, Telstra etc
+
+Answer:
+Lightning Data Service (LDS) maintains a client-side cache of record data to optimize performance and reduce unnecessary server calls.
+
+The expiration of an LDS cache entry is governed by several factors:
+
+Cache Lifetime: Each record cached by LDS has a specific lifetime. If a component requests the same record within this lifetime, the data is served from the cache. If the cache entry has expired, LDS re-requests the data from the server to ensure freshnes
+
+Automatic Invalidation: The cache is also invalidated (expired) when dependent Salesforce data or metadata changes. For example, if a record is updated elsewhere or if there are changes to the object’s layout or metadata, LDS will refresh the cache to reflect the latest data
+
+Component Actions: If a Lightning component mutates (creates, updates, or deletes) a record, LDS notifies all components using that record and refreshes the cache, ensuring all components display up-to-date information.
+
+Note - Cache Duration: The exact duration of the cache lifetime is managed internally by Salesforce and may change as the platform is optimized. Developers should not assume a fixed cache duration and should rely on LDS to manage cache refreshes as needed
