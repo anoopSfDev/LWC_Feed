@@ -1,0 +1,53 @@
+How do you implement two-way data binding between components?
+Companies that asked this: Salesforce, TCS, IBM, Accenture, Infosys, Capgemini
+
+Answer:
+Two-way data binding in LWC means data flows from parent to child AND changes in the child are reflected back to the parent. Since LWC doesn't have built-in two-way binding like some frameworks, we implement it using @api properties (parent→child) and custom events (child→parent).
+
+Implementation Pattern:
+
+Parent passes data to child via @api property
+
+Child receives data and can modify it locally
+
+Child dispatches event when data changes
+
+Parent listens to event and updates its data
+
+Updated data flows back to child via @api property
+
+parentComponent.html
+
+<template>
+    <lightning-card title="Parent Component">
+        <lightning-input label="Enter Name" value={name} onchange={handleInput}></lightning-input>
+        <c-child-component name={name} onnamechange={handleNameChange}></c-child-component>
+    </lightning-card>
+</template>
+parentComponent.js
+
+import { LightningElement } from 'lwc';
+export default class ParentComponent extends LightningElement {
+    name = 'John Doe';
+    handleInput(event) {
+        this.name = event.target.value;
+    }
+    handleNameChange(event) {
+        this.name = event.detail; // update parent state from child
+    }
+}
+childComponent.html
+
+<template>
+    <lightning-input label="Child Editable Name" value={name} onchange={handleChange}></lightning-input>
+</template>
+childComponent.js
+
+import { LightningElement, api } from 'lwc';
+export default class ChildComponent extends LightningElement {
+    @api name;
+    handleChange(event) {
+        const updatedName = event.target.value;
+        this.dispatchEvent(new CustomEvent('namechange', { detail: updatedName }));
+    }
+}
