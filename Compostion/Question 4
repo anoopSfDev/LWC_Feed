@@ -1,0 +1,50 @@
+How does the lwc:spread directive work in LWC? What are its key limitations?
+Companies that asked this: Salesforce, Adobe, HubSpot, Microsoft
+
+Answer:
+The lwc:spread directive passes multiple properties to a child component using a single object with key-value pairs.
+
+Basic Usage:
+
+// Parent Component
+export default class Parent extends LightningElement {
+    childProps = { 
+        name: "James Smith", 
+        country: "USA",
+        isActive: true 
+    };
+}
+<!-- Parent Template -->
+<template>
+    <c-child lwc:spread={childProps}></c-child>
+</template>
+// Child Component
+export default class Child extends LightningElement {
+    @api name;
+    @api country;
+    @api isActive;
+}
+
+
+Key Limitations:
+
+Always applied last - overrides explicit properties
+
+Only one lwc:spread per element
+
+Object keys must match child's @api properties
+
+<!-- Property override example -->
+<template>
+    <c-child name="Will be overridden" lwc:spread={childProps}></c-child>
+    <!-- Result: name = "James Smith" from spread object -->
+</template>
+
+
+Interview Tips:
+
+Explain it simplifies passing multiple properties at once
+
+Emphasize the override behavior and one-spread limitation
+
+Show understanding of key-value pair matching with @api properties
