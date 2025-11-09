@@ -1,0 +1,17 @@
+How do you pass data from parent to child component without using @api?
+Companies that asked this: TCS, Salesforce, Infosys, IBM, Accenture, Capgemini
+
+Answer:
+While @api is the standard way to pass data from parent to child, there are several alternative methods when @api isn't suitable or available:
+
+Alternative Methods:
+
+Lightning Message Service (LMS) - For cross-component communication
+
+Platform Events - For real-time data sharing
+
+Local Storage/Session Storage - For persistent data (not recommended in LWC context)
+
+URL Parameters - For navigation-based data
+
+Event-Driven Patterns – Using Custom Events to Pull Data (like PubSub)
